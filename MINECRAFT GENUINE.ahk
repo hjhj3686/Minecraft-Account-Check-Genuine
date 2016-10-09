@@ -1,6 +1,7 @@
 ﻿FileEncoding, UTF-8 ; UTF-8 ENCODE TYPE
 #NoEnv
 #NoTrayIcon
+#include JSON.ahk
 ;
 ;	프로그램 설명 : MOJANG API를 이용하여 정품여부를 판별합니다.
 ;	작성자 : 김대현
@@ -21,7 +22,7 @@ if(MINECRAFT_ID == NULL){
 API := "https://api.mojang.com/users/profiles/minecraft/"
 CHECKURL = %API%%MINECRAFT_ID% ;TARGET URL
 
-;URL를 파일로받아와서 변수에 저장한다
+;URL를 파일로 받아와서 변수에 저장한다
 URLDownloadToFile, %CHECKURL%, temp.txt
 Fileread, CHECK_GENUINE, temp.txt
 FileDelete, temp.txt
@@ -31,8 +32,12 @@ if(CHECK_GENUINE == NULL){
 	msgbox, API 정보를 불러올 수 없습니다.`n이 사람은 정품유저가 아닙니다.
 }
 else {
-	StringReplace, CHECK_GENUINE, CHECK_GENUINE, `{`"id`"`:`",,All
-	StringReplace, CHECK_GENUINE, CHECK_GENUINE, `"`,`"name`"`:`"%MINECRAFT_ID%`"`},,All
+	;StringReplace, CHECK_GENUINE, CHECK_GENUINE, `{`"id`"`:`",,All
+	;StringReplace, CHECK_GENUINE, CHECK_GENUINE, `"`,`"name`"`:`"%MINECRAFT_ID%`"`},,All
+	;JSON 라이브러리를 이용하여 읽는것으로 변경
+	CHECKJSON := JSON.Load(CHECK_GENUINE)
+	ID_NAME := CHECKJSON.name
+	ID_NUMBER := CHECKJSON.id
 	
-	msgbox, %MINECRAFT_ID%님은 정품유저가 맞습니다.`n고유번호 : %CHECK_GENUINE%
+	msgbox, %ID_NAME%님은 정품유저가 맞습니다.`n고유번호 : %ID_NUMBER%
 }
