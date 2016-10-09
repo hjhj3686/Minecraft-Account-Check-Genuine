@@ -1,7 +1,7 @@
 ﻿FileEncoding, UTF-8 ; UTF-8 ENCODE TYPE
 #NoEnv
 #NoTrayIcon
-#include JSON.ahk
+#include lib/JSON.ahk
 ;
 ;	프로그램 설명 : MOJANG API를 이용하여 정품여부를 판별합니다.
 ;	작성자 : 김대현
